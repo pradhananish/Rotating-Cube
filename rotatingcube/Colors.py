@@ -4,8 +4,6 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-import random
-
 vertices = (
     (1, -1, -1),
     (1, 1, -1),
@@ -42,29 +40,26 @@ surfaces = (
 )
 
 colors = (
-    (0, 1, 1),  # Cyan
-    (1, 1, 1),  # White
-    (0, 1, 1),  # Cyan
-    (0, 1, 1),  # Cyan
-    (0.5, 0, 0.5),  # Lighter Purple
-    (0, 1, 1),  # Cyan
+    (1, 0, 0),  # Red
+    (0, 1, 0),  # Green
     (0, 0, 1),  # Blue
-    (1, 1, 1),  # White
-    (0, 1, 1),  # Cyan
-    (0.5, 0, 0.5)  # Lighter Purple
+    (1, 1, 0),  # Yellow
+    (1, 0, 1),  # Magenta
+    (0, 1, 1)   # Cyan
 )
 
 def Cube():
     glBegin(GL_QUADS)
     for surface in surfaces:
-        for i, vertex in enumerate(surface):
-            glColor3fv(colors[i % len(colors)])
+        glColor3fv(colors[surfaces.index(surface)])
+        for vertex in surface:
             glVertex3fv(vertices[vertex])
     glEnd()
 
     glBegin(GL_LINES)
     for edge in edges:
         for vertex in edge:
+            glColor3fv((1, 1, 1))  
             glVertex3fv(vertices[vertex])
     glEnd()
 

@@ -4,7 +4,6 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 import random
 
-
 vertices = (
     (1, -1, -1),
     (1, 1, -1),
@@ -31,23 +30,30 @@ surfaces = (
     (4, 0, 3, 6)
 )
 
+
 colors = (
-    (0, 1, 1),    # Cyan
-    (1, 1, 1),    # White
-    (0, 1, 1),    # Cyan
-    (0, 1, 1),    # Cyan
-    (0.5, 0, 0.5) # Lighter Purple
+    (1, 0, 0),  # Red
+    (0, 1, 0),  # Green
+    (0, 0, 1),  # Blue
+    (1, 1, 0),  # Yellow
+    (1, 0, 1),  # Magenta
+    (0, 1, 1),  # Cyan
+    (0.5, 0.5, 0.5),  # Grey
+    (1, 0.5, 0),  # Orange
+    (0, 0.5, 0.5),  # Teal
+    (0.5, 0, 0.5)   # Purple
 )
 
 def Cube():
     glBegin(GL_QUADS)
-    for surface in surfaces:
-        for i, vertex in enumerate(surface):
-            glColor3fv(colors[i])
+    for i, surface in enumerate(surfaces):
+        glColor3fv(colors[i % len(colors)])
+        for vertex in surface:
             glVertex3fv(vertices[vertex])
     glEnd()
 
     glBegin(GL_LINES)
+    glColor3fv((1, 1, 1)) 
     for edge in edges:
         for vertex in edge:
             glVertex3fv(vertices[vertex])
@@ -85,7 +91,6 @@ def main():
                 if event.button == 5:  
                     glTranslatef(0, 0, -1.0)
 
-       
         x = glGetDoublev(GL_MODELVIEW_MATRIX)
         camera_z = x[3][2]
         
@@ -96,7 +101,6 @@ def main():
         if camera_z <= 0:
             object_passed = True
 
-   
         glTranslatef(0, 0, 0.01)
 
         pygame.time.wait(10)

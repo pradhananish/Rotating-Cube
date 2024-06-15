@@ -30,15 +30,10 @@ surfaces = (
     (4, 0, 3, 6)
 )
 
-colors = (
-    (0, 1, 1),    # Cyan
-    (1, 1, 1),    # White
-    (0, 1, 1),    # Cyan
-    (0, 1, 1),    # Cyan
-    (0.5, 0, 0.5) # Lighter Purple
-)
+def generate_random_colors():
+    return [(random.random(), random.random(), random.random()) for _ in range(6)]
 
-def set_vertices(max_distance):	
+def set_vertices(max_distance):    
     x_value_change = random.randrange(-10, 10)
     y_value_change = random.randrange(-10, 10)
     z_value_change = random.randrange(-1 * max_distance, -20)
@@ -55,19 +50,18 @@ def set_vertices(max_distance):
         new_vert.append(new_z)
         new_vertices.append(new_vert)
 
-    return new_vertices
+    return new_vertices, generate_random_colors()
 
-def Cube(vertices):
+def Cube(vertices, colors):
     glBegin(GL_QUADS)
-    for surface in surfaces:
-        x = 0
+    for i, surface in enumerate(surfaces):
+        glColor3fv(colors[i % len(colors)])
         for vertex in surface:
-            glColor3fv(colors[x])
             glVertex3fv(vertices[vertex])
-            x += 1
     glEnd()
 
     glBegin(GL_LINES)
+    glColor3fv((1, 1, 1))  # White for the edges
     for edge in edges:
         for vertex in edge:
             glVertex3fv(vertices[vertex])
@@ -116,7 +110,8 @@ def main():
         glTranslatef(x_move, y_move, 0.50)
 
         for each_cube in cube_dict:
-            Cube(cube_dict[each_cube])
+            vertices, colors = cube_dict[each_cube]
+            Cube(vertices, colors)
 
         pygame.display.flip()
         pygame.time.wait(10)
